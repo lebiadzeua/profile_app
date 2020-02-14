@@ -1,0 +1,24 @@
+version: 2.1
+jobs:
+  rspec:
+    docker:
+      - image: circleci/ruby:2.7.0
+    steps:
+      - checkout
+      - run: bundle install --without development
+      - run: rspec
+  rubocop:
+    docker:
+      - image: circleci/ruby:2.7.0
+     steps:
+     - checkout
+     - run: bundle install --without test
+     - run: rubocop
+workflows:
+  version: 2.1
+  pipeline:
+    jobs:
+      - rspec
+      - rubocop:
+        requires:
+          - rspec
