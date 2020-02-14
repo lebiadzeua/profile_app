@@ -13,6 +13,7 @@ module ProfileConfigSchema
 
   # rubocop:disable Metrics/MethodLength
   def self.schema
+    uri_regexp = URI::DEFAULT_PARSER.make_regexp
     apply do
       object(
         email: { type: 'string', pattern: URI::MailTo::EMAIL_REGEXP },
@@ -26,7 +27,7 @@ module ProfileConfigSchema
         education: { type: 'string', minLength: 30 },
         past_job_experience: { type: 'string', minLength: 5 },
         location: { type: 'string' },
-        url_to_repo: {type: 'string', pattern: URI.regexp }
+        url_to_repo: { type: 'string', pattern: uri_regexp }
       ).freeze
     end
   end
