@@ -1,3 +1,5 @@
+orbs:
+  heroku: circleci/heroku@1.0.1
 version: 2.1
 jobs:
   rspec:
@@ -14,6 +16,12 @@ jobs:
       - checkout
       - run: bundle install --without test
       - run: rubocop
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git
 workflows:
   version: 2.1
   pipeline:
@@ -22,3 +30,6 @@ workflows:
       - rubocop:
           requires:
             - rspec
+      - deploy:
+          requires:
+            - rubocop
